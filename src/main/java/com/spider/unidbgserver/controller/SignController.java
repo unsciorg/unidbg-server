@@ -1,7 +1,8 @@
 package com.spider.unidbgserver.controller;
 
-import com.alibaba.fastjson.JSON;
+import com.spider.unidbgserver.dto.QiangdongSignDTO;
 import com.spider.unidbgserver.service.DouyinSignService;
+import com.spider.unidbgserver.service.QiangdongSignService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,9 +18,15 @@ public class SignController {
             Map<String, String> result = douyinSignService.crack(url);
             return result;
         }
+    }
 
+    @RequestMapping(value = "doSign", method = {RequestMethod.GET, RequestMethod.POST})
+    public String dySignNext(@RequestBody QiangdongSignDTO qiangdongSignDTO) {
+        return qiangdongSignService.sign(qiangdongSignDTO);
     }
     @Resource
     private DouyinSignService douyinSignService;
+    @Resource
+    private QiangdongSignService qiangdongSignService;
 
 }

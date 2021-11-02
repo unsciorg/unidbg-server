@@ -18,46 +18,48 @@ import java.util.Map;
 public class DouyinSignService {
 
     public Map<String, String> crack(String url) {
-        // 调用so的入口，这是smali写法
-        String methodSign = "leviathan(II[B)[B";
-
-        //解析url里面的参数
-        String a2 = getUrlParse(url);
-
-        //字符串转md5
-        String a3 = stringToMD5(a2);
-        String str3 = "00000000000000000000000000000000";
-        String str4 = "00000000000000000000000000000000";
-        String str5 = "00000000000000000000000000000000";
-        StringBuilder sb = new StringBuilder();
-        sb.append(a3);
-        sb.append(str3);
-        sb.append(str4);
-        sb.append(str5);
-
-        byte[] data = str2byte(sb.toString());
-        float currentTimeMillis = System.currentTimeMillis();
-        int timeStamp = (int) (currentTimeMillis / 1000);
-        List<Object> list = new ArrayList<>(10);
-        list.add(douyinVM.getVm().getJNIEnv()); // 第一个参数是env
-        list.add(0); // 第二个参数，实例方法是jobject，静态方法是jclass，直接填0，一般用不到。
-        list.add(-1);
-        list.add(timeStamp);
-        list.add(douyinVM.getVm().addLocalObject(new ByteArray(douyinVM.getVm(), data)));
-        // 直接通过地址调用
-        Number number = dalvikModule.getModule().callFunction(douyinVM.getEmulator(), 0x57789, list.toArray())[0];
-        ByteArray ret = douyinVM.getVm().getObject(number.intValue());
-        //通过调用jni静态方法调用
-        //      ByteArray ret = Native.callStaticJniMethodObject(emulator, methodSign, -1, timeStamp, new ByteArray(vm, data));
-        // 获取地址的值
-        byte[] tt = ret.getValue();
-        //执行最外层的com.ss.a.b.a.a
-        String s = genXGorgon(tt);
 
 
+//        // 调用so的入口，这是smali写法
+//        String methodSign = "leviathan(II[B)[B";
+//
+//        //解析url里面的参数
+//        String a2 = getUrlParse(url);
+//
+//        //字符串转md5
+//        String a3 = stringToMD5(a2);
+//        String str3 = "00000000000000000000000000000000";
+//        String str4 = "00000000000000000000000000000000";
+//        String str5 = "00000000000000000000000000000000";
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(a3);
+//        sb.append(str3);
+//        sb.append(str4);
+//        sb.append(str5);
+//
+//        byte[] data = str2byte(sb.toString());
+//        float currentTimeMillis = System.currentTimeMillis();
+//        int timeStamp = (int) (currentTimeMillis / 1000);
+//        List<Object> list = new ArrayList<>(10);
+//        list.add(douyinVM.getVm().getJNIEnv()); // 第一个参数是env
+//        list.add(0); // 第二个参数，实例方法是jobject，静态方法是jclass，直接填0，一般用不到。
+//        list.add(-1);
+//        list.add(timeStamp);
+//        list.add(douyinVM.getVm().addLocalObject(new ByteArray(douyinVM.getVm(), data)));
+//        // 直接通过地址调用
+//        Number number = dalvikModule.getModule().callFunction(douyinVM.getEmulator(), 0x57789, list.toArray())[0];
+//        ByteArray ret = douyinVM.getVm().getObject(number.intValue());
+//        //通过调用jni静态方法调用
+//        //      ByteArray ret = Native.callStaticJniMethodObject(emulator, methodSign, -1, timeStamp, new ByteArray(vm, data));
+//        // 获取地址的值
+//        byte[] tt = ret.getValue();
+//        //执行最外层的com.ss.a.b.a.a
+//        String s = genXGorgon(tt);
+//
+//
         Map<String, String> result = new HashMap<>();
-        result.put("X-Khronos", timeStamp + "");
-        result.put("X-Gorgon", s);
+//        result.put("X-Khronos", timeStamp + "");
+//        result.put("X-Gorgon", s);
         return result;
     }
 
@@ -117,9 +119,9 @@ public class DouyinSignService {
         return new String(cArr);
     }
 
-    @Resource
-    private DouyinVM douyinVM;
-    @Resource
-    private DalvikModule dalvikModule;
+//    @Resource
+//    private DouyinVM douyinVM;
+//    @Resource
+//    private DalvikModule dalvikModule;
 
 }

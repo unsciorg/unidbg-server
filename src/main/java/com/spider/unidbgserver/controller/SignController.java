@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Map;
-1`
+
 @RestController
 @RequestMapping("/unidbg")
 public class SignController {
@@ -18,6 +18,7 @@ public class SignController {
             Map<String, String> result = douyinSignService.crack(url);
             return result;
         }
+
     }
 
     @RequestMapping(value = "doSign", method = {RequestMethod.GET, RequestMethod.POST})

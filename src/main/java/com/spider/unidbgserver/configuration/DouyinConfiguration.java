@@ -37,12 +37,9 @@ public class DouyinConfiguration {
         Memory memory = emulator.getMemory(); // 模拟器的内存操作接口
         memory.setLibraryResolver(new AndroidResolver(23));// 设置系统类库解析
 
-<<<<<<< HEAD
         VM vm = emulator.createDalvikVM(ResourceUtils
                 .getFile("classpath:example_binaries\\douyin10_6.apk")); // 创建Android虚拟机
-=======
-        VM vm = emulator.createDalvikVM(ResourceUtils.getFile("classpath:example_binaries\\douyin10_6.apk")); // 创建Android虚拟机
->>>>>>> f302883 (remove file)
+
         vm.setJni(new DouyinJniNext());
         vm.setVerbose(true);// 设置是否打印Jni调用细节
 

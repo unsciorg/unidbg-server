@@ -14,16 +14,20 @@ import java.security.cert.X509Certificate;
 
 public class QiangDongJni extends AbstractJni {
 
+    public QiangDongJni(String apkRealPath) {
+        this.apkRealPath = apkRealPath;
+    }
+
+    private String apkRealPath;
+
+
     @Override
     public DvmObject<?> getStaticObjectField(BaseVM vm, DvmClass dvmClass, String signature) {
         if ("com/jingdong/common/utils/BitmapkitUtils->a:Landroid/app/Application;".equals(signature)) {
-            return vm.resolveClass("android/app/Activity"
-                    , vm.resolveClass("android/content/ContextWrapper"
-                            , vm.resolveClass("android/content/Context")))
-                    .newObject(null);
+            return vm.resolveClass("android/app/Activity", vm.resolveClass("android/content/ContextWrapper", vm.resolveClass("android/content/Context"))).newObject(null);
         }
 
-        return super.getStaticObjectField(vm, dvmClass, signature);
+        return super.getStaticObjectField( vm,  dvmClass,  signature);
     }
 
     @Override
@@ -33,7 +37,7 @@ public class QiangDongJni extends AbstractJni {
                 StringObject apkPath = varArg.getObjectArg(0);
                 StringObject directory = varArg.getObjectArg(1);
                 StringObject filename = varArg.getObjectArg(2);
-                if (apkPath.equals(apkPath.getValue()) &&
+                if (apkRealPath.equals(apkPath.getValue()) &&
                         "META-INF/".equals(directory.getValue()) &&
                         ".RSA".equals(filename.getValue())) {
                     byte[] data = vm.unzip("META-INF/JINGDONG.RSA");
@@ -88,6 +92,7 @@ public class QiangDongJni extends AbstractJni {
             try {
                 return vm.resolveClass("sun/security/pkcs/PKCS7").newObject(new PKCS7(array.getValue()));
             } catch (ParsingException e) {
+                e.printStackTrace();
                 throw new IllegalStateException(e);
             }
         }
@@ -106,16 +111,7 @@ public class QiangDongJni extends AbstractJni {
         return super.callObjectMethod(vm, dvmObject, signature, varArg);
     }
 
-    @Override
-    public DvmObject<?> getObjectField(BaseVM vm, DvmObject<?> dvmObject, String signature) {
-        if ("android/content/pm/ApplicationInfo->sourceDir:Ljava/lang/String;".equals(signature)) {
-            return new StringObject(vm, apkPath);
-        }
-
-        return super.getObjectField(vm, dvmObject, signature);
-    }
-
-    private static byte[] objectToBytes(Object obj) {
+    private byte[] objectToBytes(Object obj) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -130,12 +126,12 @@ public class QiangDongJni extends AbstractJni {
         }
     }
 
-    public QiangDongJni() {
-    }
+    @Override
+    public DvmObject<?> getObjectField(BaseVM vm, DvmObject<?> dvmObject, String signature) {
+        if ("android/content/pm/ApplicationInfo->sourceDir:Ljava/lang/String;".equals(signature)) {
+            return new StringObject(vm, apkRealPath);
+        }
 
-    public QiangDongJni(String apkPath) {
-        this.apkPath = apkPath;
+        return super.getObjectField(vm, dvmObject, signature);
     }
-
-    private String apkPath;
 }

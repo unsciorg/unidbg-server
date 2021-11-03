@@ -1,6 +1,7 @@
 package com.spider.unidbgserver.service;
 
 
+import com.github.unidbg.linux.android.dvm.DalvikModule;
 import com.github.unidbg.linux.android.dvm.DvmClass;
 import com.github.unidbg.linux.android.dvm.StringObject;
 import com.spider.unidbgserver.dto.QiangdongSignDTO;
@@ -14,6 +15,7 @@ public class QiangdongSignService {
 
 
     public String sign(QiangdongSignDTO qiangdongSignDTO){
+
         DvmClass context = qiangDongVM.getVm().resolveClass("android/app/Activity");
         DvmClass cBitmapkitUtils = qiangDongVM.getVm().resolveClass("com/jingdong/common/utils/BitmapkitUtils");
 

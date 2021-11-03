@@ -47,4 +47,4 @@ Thumbs.db
 # others
 .svn/
 
-.apk
+*.apk
